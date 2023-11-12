@@ -1,0 +1,70 @@
+version: "3.8"
+
+services:
+  server:
+    depends_on:
+      - postgres
+    container_name: server
+    networks:
+      - server-nw
+    build:
+      dockerfile: Dockerfile
+      context: .
+    ports:
+      - "8080:8080"
+      - "8082:8082"
+    env_file:
+      - .env
+
+  postgres:
+    container_name: server-db
+    networks:
+      - server-nw
+    image: postgres
+    env_file:
+      - .env
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5434:5432"
+
+  grafana:
+    image: grafana/grafana-enterprise
+    depends_on:
+      - prometheus
+    container_name: grafana
+    networks:
+      - server-nw
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    env_file:
+      - .env
+    ports:
+      - '3000:3000'
+
+  prometheus:
+    image: prom/prometheus:v2.36.2
+    depends_on:
+      - server
+    container_name: prometheus
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - "9090:9090"
+    networks:
+      - server-nw
+
+networks:
+  server-nw:
+
+volumes:
+  postgres-data:
+  prometheus_data:
+  grafana-storage:
