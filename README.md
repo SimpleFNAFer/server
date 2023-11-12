@@ -12,6 +12,14 @@ GF_SECURITY_ADMIN_USER: [gf_user]
 GF_SECURITY_ADMIN_PASSWORD: [gf_password]
 GF_DASHBOARDS_MIN_REFRESH_INTERVAL: 1s
 ```
+****PUT .env FILE TO THE ROOT PROJECT DIRECTORY****
+```
+server
+├── ...
+├── docker-compose.yml
+├── .env
+└── ...
+```
 This is an example of .env file. \
 It contains all variables that are mandatory for this project. \
 Put ***your own values*** for variables having text in ***square brackets***. \
