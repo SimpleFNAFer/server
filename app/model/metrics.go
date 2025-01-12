@@ -1,7 +1,12 @@
 package model
 
-import "github.com/prometheus/client_golang/prometheus"
+import (
+	"github.com/prometheus/client_golang/prometheus"
+	"sync"
+)
 
 type Metrics struct {
-	LastSecondRequests prometheus.GaugeFunc
+	sync.Mutex
+
+	LastSecondRequests *prometheus.GaugeVec
 }

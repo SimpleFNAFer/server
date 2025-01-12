@@ -7,5 +7,15 @@ import (
 
 type UseCase interface {
 	Home(sourceIP string) (tmpl *template.Template, data model.HomeData)
-	UpdateCountLastSecondRequests() float64
+	Admin() (tmpl *template.Template, data model.AdminData)
+	AdminLoginTemplate() (tmpl *template.Template)
+	Forbidden() (tmpl *template.Template)
+
+	AdminLogin(login, password string) string
+	AdminCheckSession(session string) bool
+	BlockIP(ip string)
+	UnblockIP(ip string)
+	IsBlockedIP(ip string) bool
+
+	UpdateCountLastSecondRequests(m *model.Metrics)
 }

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="admin.css" type="text/css" rel="stylesheet">
+    <script src="admin.js"></script>
+    <title>Панель администратора</title>
+</head>
+<header>Панель администратора</header>
+<body>
+<div class="container">
+    <div class="frequent_title">IP с RPS > 30</div>
+    <div class="frequent">
+        {{ range .FrequentIPs}}
+        <div class="frequent_entity">
+            <div class="frequent_form">
+                <div class="frequent_ip">{{.}}</div>
+                <div class="frequent_button">Заблокировать</div>
+            </div>
+        </div>
+        {{ end}}
+    </div>
+    <div class="blocked_title">Заблокированные IP</div>
+    <div class="blocked">
+        {{ range .BlockedIPs}}
+        <div class="blocked_entity">
+            <div class="blocked_form">
+                <div class="blocked_ip">{{.}}</div>
+                <div class="blocked_button">Разблокировать</div>
+            </div>
+        </div>
+        {{ end}}
+    </div>
+</div>
+</body>
+</html>

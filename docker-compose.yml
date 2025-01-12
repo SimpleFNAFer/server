@@ -4,6 +4,7 @@ services:
   server:
     depends_on:
       - postgres
+      - redis
     container_name: server
     networks:
       - server-nw
@@ -17,7 +18,7 @@ services:
       - .env
 
   postgres:
-    container_name: server-db
+    container_name: ${POSTGRES_HOST}
     networks:
       - server-nw
     image: postgres
@@ -28,6 +29,31 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5434:5432"
+
+  redis:
+    image: redis:latest
+    container_name: ${REDIS_HOST}
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_USER=${REDIS_USER}
+      - REDIS_USER_PASSWORD=${REDIS_USER_PASSWORD}
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: >
+      sh -c '
+        mkdir -p /usr/local/etc/redis &&
+        echo "bind 0.0.0.0" > /usr/local/etc/redis/redis.conf &&
+        echo "requirepass $REDIS_PASSWORD" >> /usr/local/etc/redis/redis.conf &&
+        echo "appendonly yes" >> /usr/local/etc/redis/redis.conf &&
+        echo "appendfsync everysec" >> /usr/local/etc/redis/redis.conf &&
+        echo "user default on nopass ~* +@all" > /usr/local/etc/redis/users.acl &&
+        echo "user $REDIS_USER on >$REDIS_USER_PASSWORD ~* +@all" >> /usr/local/etc/redis/users.acl &&
+        redis-server /usr/local/etc/redis/redis.conf --aclfile /usr/local/etc/redis/users.acl
+      '
+    networks:
+      - server-nw
 
   grafana:
     image: grafana/grafana-enterprise
@@ -68,3 +94,4 @@ volumes:
   postgres-data:
   prometheus_data:
   grafana-storage:
+  redis-data:

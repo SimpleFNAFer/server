@@ -1,0 +1,71 @@
+html, body, header {
+    position: relative;
+    margin: 0 auto;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 90%;
+    background-color: white;
+}
+
+header {
+    color: white;
+    background-color: #42076b;
+    height: 10%;
+    font: bold 30px Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    flex-direction: column;
+}
+
+.login_form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border: 1px solid darkgrey;
+    border-radius: 10px;
+}
+
+.input_text {
+    font: normal 20px Arial, sans-serif;
+    padding: 10px;
+    color: #42076b50;
+    border: 2px solid #42076b50;
+    border-radius: 5px;
+}
+.input_text:focus {
+    outline: 2px solid #42076b;
+    color: #42076b;
+}
+
+.input_button {
+    margin: 40px auto auto auto;
+    background: purple;
+    width: 100%;
+    color: white;
+    font: bold 25px Arial, sans-serif;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.input_label {
+    font: bold 15px Arial, sans-serif;
+    padding: 10px 0 5px 0;
+    color: #42076b;
+}
