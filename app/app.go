@@ -108,6 +108,11 @@ func ConfigureRoutes(h home.Handler) (routes *chi.Mux) {
 		http.FileServer(
 			http.Dir("template")))
 
+	routes.Handle(
+		"/{script}.js",
+		http.FileServer(
+			http.Dir("template")))
+
 	routes.Get("/", h.Home)
 	routes.Get("/admin", h.Admin)
 	routes.Get("/admin-login", h.AdminLoginGet)
