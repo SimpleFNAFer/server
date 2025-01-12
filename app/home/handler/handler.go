@@ -28,6 +28,7 @@ func (h *handler) Home(w http.ResponseWriter, r *http.Request) {
 
 	if h.uc.IsBlockedIP(sourceIP) {
 		http.Redirect(w, r, "/forbidden", http.StatusSeeOther)
+		return
 	}
 
 	template, data := h.uc.Home(sourceIP)
@@ -42,14 +43,17 @@ func (h *handler) Admin(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		if errors.Is(err, http.ErrNoCookie) {
 			http.Redirect(w, r, "/admin-login", http.StatusSeeOther)
+			return
 		}
 
 		http.Redirect(w, r, "/forbidden", http.StatusSeeOther)
+		return
 	}
 
 	exists := h.uc.AdminCheckSession(c.Value)
 	if !exists {
 		http.Redirect(w, r, "/admin-login", http.StatusSeeOther)
+		return
 	}
 
 	template, data := h.uc.Admin()
@@ -75,6 +79,7 @@ func (h *handler) AdminLoginPost(w http.ResponseWriter, r *http.Request) {
 
 	if session == "" {
 		http.Redirect(w, r, "/forbidden", http.StatusSeeOther)
+		return
 	}
 
 	r.AddCookie(
@@ -93,14 +98,17 @@ func (h *handler) Block(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		if errors.Is(err, http.ErrNoCookie) {
 			http.Redirect(w, r, "/admin-login", http.StatusSeeOther)
+			return
 		}
 
 		http.Redirect(w, r, "/forbidden", http.StatusSeeOther)
+		return
 	}
 
 	exists := h.uc.AdminCheckSession(c.Value)
 	if !exists {
 		http.Redirect(w, r, "/forbidden", http.StatusSeeOther)
+		return
 	}
 
 	ip := r.FormValue("ip")
@@ -114,14 +122,17 @@ func (h *handler) Unblock(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		if errors.Is(err, http.ErrNoCookie) {
 			http.Redirect(w, r, "/admin-login", http.StatusSeeOther)
+			return
 		}
 
 		http.Redirect(w, r, "/forbidden", http.StatusSeeOther)
+		return
 	}
 
 	exists := h.uc.AdminCheckSession(c.Value)
 	if !exists {
 		http.Redirect(w, r, "/forbidden", http.StatusSeeOther)
+		return
 	}
 
 	ip := r.FormValue("ip")
