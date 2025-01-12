@@ -18,7 +18,7 @@ create table server.blocked_ip
     primary key (id),
 
     unique (ip)
-)
+);
 
 create table server.admin
 (
@@ -29,4 +29,4 @@ create table server.admin
     primary key (id),
 
     unique (login)
-)
+);
