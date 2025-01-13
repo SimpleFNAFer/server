@@ -5,6 +5,7 @@ import (
 	"github.com/simplefnafer/network-attack-lab/server/app/home"
 	"github.com/sirupsen/logrus"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -24,7 +25,7 @@ func NewHandler(
 }
 
 func (h *handler) Home(w http.ResponseWriter, r *http.Request) {
-	sourceIP := r.RemoteAddr
+	sourceIP := strings.Split(r.RemoteAddr, ":")[0]
 
 	if h.uc.IsBlockedIP(sourceIP) {
 		http.Redirect(w, r, "/forbidden", http.StatusSeeOther)
