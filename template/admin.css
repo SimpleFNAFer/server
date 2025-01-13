@@ -84,6 +84,7 @@ header {
 .frequent_entity, .blocked_entity {
     position: relative;
     width: 100%;
+    margin: 5px 0 5px 0;
 }
 
 .frequent_form, .blocked_form {
