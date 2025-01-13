@@ -10,6 +10,7 @@ type UseCase interface {
 	Admin() (tmpl *template.Template, data model.AdminData)
 	AdminLoginTemplate() (tmpl *template.Template)
 	Forbidden() (tmpl *template.Template)
+	ForbiddenUser() (tmpl *template.Template)
 
 	AdminLogin(login, password string) string
 	AdminCheckSession(session string) bool

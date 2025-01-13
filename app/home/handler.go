@@ -10,4 +10,5 @@ type Handler interface {
 	Block(w http.ResponseWriter, r *http.Request)
 	Unblock(w http.ResponseWriter, r *http.Request)
 	Forbidden(w http.ResponseWriter, _ *http.Request)
+	ForbiddenUser(w http.ResponseWriter, _ *http.Request)
 }

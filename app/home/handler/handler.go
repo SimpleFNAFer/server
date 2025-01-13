@@ -28,7 +28,7 @@ func (h *handler) Home(w http.ResponseWriter, r *http.Request) {
 	sourceIP := strings.Split(r.RemoteAddr, ":")[0]
 
 	if h.uc.IsBlockedIP(sourceIP) {
-		http.Redirect(w, r, "/forbidden", http.StatusSeeOther)
+		http.Redirect(w, r, "/forbidden-user", http.StatusSeeOther)
 		return
 	}
 
@@ -148,5 +148,13 @@ func (h *handler) Forbidden(w http.ResponseWriter, _ *http.Request) {
 	err := template.Execute(w, nil)
 	if err != nil {
 		logrus.WithField("origin.function", "Forbidden").Error(err)
+	}
+}
+
+func (h *handler) ForbiddenUser(w http.ResponseWriter, _ *http.Request) {
+	template := h.uc.ForbiddenUser()
+	err := template.Execute(w, nil)
+	if err != nil {
+		logrus.WithField("origin.function", "ForbiddenUser").Error(err)
 	}
 }

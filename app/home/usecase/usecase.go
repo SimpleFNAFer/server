@@ -119,6 +119,15 @@ func (uc *useCase) Forbidden() (tmpl *template.Template) {
 	return tmpl
 }
 
+func (uc *useCase) ForbiddenUser() (tmpl *template.Template) {
+	tmpl, err := template.ParseFiles("template/forbidden-user.html")
+	if err != nil {
+		logrus.WithField("origin.function", "PrepareTemplate").Error(err)
+	}
+
+	return tmpl
+}
+
 func (uc *useCase) BlockIP(ip string) {
 	uc.r.BlockIP(ip)
 }

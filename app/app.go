@@ -117,6 +117,7 @@ func ConfigureRoutes(h home.Handler) (routes *chi.Mux) {
 	routes.Get("/admin", h.Admin)
 	routes.Get("/admin-login", h.AdminLoginGet)
 	routes.Get("/forbidden", h.Forbidden)
+	routes.Get("/forbidden-user", h.Forbidden)
 	routes.Post("/admin-login", h.AdminLoginPost)
 	routes.Post("/block", h.Block)
 	routes.Post("/unblock", h.Unblock)
