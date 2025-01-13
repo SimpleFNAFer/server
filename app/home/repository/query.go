@@ -20,9 +20,10 @@ const (
 	queryGetFrequentIPs = `
 		select source_ip
 		from server.request 
-		    join server.blocked_ip
-		where timestamp >= now() - interval '1 second'
-		and blocked_ip.ip <> request.ip
+		    join server.blocked_ip 
+		        on request.source_ip = blocked_ip.ip
+		where request.timestamp >= now() - interval '1 second'
+		and blocked_ip.ip <> request.source_ip
 		group by source_ip 
 		having count(*) > 30;
 `

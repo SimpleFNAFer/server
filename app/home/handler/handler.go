@@ -82,14 +82,15 @@ func (h *handler) AdminLoginPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	r.AddCookie(
-		&http.Cookie{
-			Name:    "session",
-			Value:   session,
-			Path:    "/",
-			Expires: time.Now().Add(h.sessionDuration),
-		},
-	)
+	cookie := &http.Cookie{
+		Name:    "session",
+		Value:   session,
+		Path:    "/",
+		Expires: time.Now().Add(h.sessionDuration),
+	}
+
+	http.SetCookie(w, cookie)
+	r.AddCookie(cookie)
 	http.Redirect(w, r, "/admin", http.StatusSeeOther)
 }
 
