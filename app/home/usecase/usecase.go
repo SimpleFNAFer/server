@@ -8,6 +8,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"html/template"
 	"slices"
+	"time"
 )
 
 type useCase struct {
@@ -46,6 +47,8 @@ func (uc *useCase) UpdateCountLastSecondRequests(m *model.Metrics) {
 		}
 
 		m.Unlock()
+
+		time.Sleep(1 * time.Second)
 	}
 }
 
