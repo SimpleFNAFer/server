@@ -18,14 +18,16 @@ const (
 `
 
 	queryGetFrequentIPs = `
+		with ip_times as (select source_ip,
+								 date_trunc('second', request.timestamp) as scd,
+								 count(*)                                as total
+						  from server.request
+						  where source_ip not in (select ip from server.blocked_ip)
+						  group by source_ip, date_trunc('second', request.timestamp))
 		select source_ip
-		from server.request 
-		    join server.blocked_ip 
-		        on request.source_ip = blocked_ip.ip
-		where request.timestamp >= now() - interval '1 second'
-		and blocked_ip.ip <> request.source_ip
-		group by source_ip 
-		having count(*) > 30;
+		from ip_times
+		where total > 30
+		group by source_ip;
 `
 
 	queryGetBlockedIPs = `
