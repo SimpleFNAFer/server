@@ -14,7 +14,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 fetch("/block", {
                     method: "POST",
                     body: formData,
-                    credentials: "include"
+                    credentials: "include",
+                    redirect: "follow"
                 })
             }
         }
@@ -34,7 +35,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 fetch("/unblock", {
                     method: "POST",
                     body: formData,
-                    credentials: "include"
+                    credentials: "include",
+                    redirect: "follow"
                 })
             }
         }

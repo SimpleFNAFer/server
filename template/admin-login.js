@@ -17,7 +17,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 fetch("/admin-login", {
                     method: "POST",
                     body: formData,
-                    credentials: "include"
+                    credentials: "include",
+                    redirect: "follow"
                 })
             }
         }
