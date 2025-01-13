@@ -53,7 +53,7 @@ func (r *repository) GetAdminPassword(login string) string {
 }
 
 func (r *repository) SaveSession(s string) error {
-	return r.rdb.Set(context.Background(), s, struct{}{}, r.sessionDuration).Err()
+	return r.rdb.Set(context.Background(), s, "", r.sessionDuration).Err()
 }
 
 func (r *repository) CheckSession(s string) (bool, error) {

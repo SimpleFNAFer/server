@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <link href="home.css" type="text/css" rel="stylesheet">
     <title>Главная</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            history.replaceState({ html: document.body.innerHTML }, '', window.location.href);
+        });
+    </script>
 </head>
 <header>Главная страница веб-сервера</header>
 <body>

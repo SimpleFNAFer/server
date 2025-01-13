@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>403</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            history.replaceState({ html: document.body.innerHTML }, '', window.location.href);
+        });
+    </script>
 </head>
 <body
         style="

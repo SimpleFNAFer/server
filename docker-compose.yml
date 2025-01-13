@@ -3,8 +3,10 @@ version: "3.8"
 services:
   server:
     depends_on:
-      - postgres
-      - redis
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     container_name: server
     networks:
       - server-nw
@@ -29,6 +31,27 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5434:5432"
+    healthcheck:
+        test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+        interval: 10s
+        timeout: 3s
+        retries: 5
+
+  pgadmin:
+    image: 'docker.io/dpage/pgadmin4:latest'
+    container_name: pgadmin
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "${PGADMIN_DEFAULT_EMAIL}"
+      PGADMIN_DEFAULT_PASSWORD: "${PGADMIN_DEFAULT_PASSWORD}"
+    ports:
+      - "15080:80"
+    networks:
+      - server-nw
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin/
 
   redis:
     image: redis:latest
@@ -54,6 +77,11 @@ services:
       '
     networks:
       - server-nw
+    healthcheck:
+      test: [ "CMD-SHELL", "redis-cli ping | grep PONG" ]
+      interval: 1s
+      timeout: 3s
+      retries: 5
 
   grafana:
     image: grafana/grafana-enterprise
@@ -92,6 +120,7 @@ networks:
 
 volumes:
   postgres-data:
+  pgadmin-data:
   prometheus_data:
   grafana-storage:
   redis-data:

@@ -55,16 +55,19 @@ func (uc *useCase) UpdateCountLastSecondRequests(m *model.Metrics) {
 func (uc *useCase) AdminLogin(login, password string) string {
 	passwordHash := uc.r.GetAdminPassword(login)
 	if passwordHash == "" {
+		logrus.WithField("origin.function", "AdminLogin").Error("password not found")
 		return ""
 	}
 
-	if bcrypt.CompareHashAndPassword([]byte(passwordHash), []byte(password)) != nil {
+	if err := bcrypt.CompareHashAndPassword([]byte(passwordHash), []byte(password)); err != nil {
+		logrus.WithField("origin.function", "AdminLogin").Error(err)
 		return ""
 	}
 
 	session := uuid.NewString()
 
 	if err := uc.r.SaveSession(session); err != nil {
+		logrus.WithField("origin.function", "AdminLogin").Error(err)
 		return ""
 	}
 
@@ -74,6 +77,7 @@ func (uc *useCase) AdminLogin(login, password string) string {
 func (uc *useCase) AdminCheckSession(session string) bool {
 	exists, err := uc.r.CheckSession(session)
 	if err != nil {
+		logrus.WithField("origin.function", "AdminCheckSession").Error(err)
 		return false
 	}
 
